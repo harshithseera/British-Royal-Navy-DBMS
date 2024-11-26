@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.40, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 9.0.1, for macos14.7 (arm64)
 --
 -- Host: localhost    Database: navy
 -- ------------------------------------------------------
--- Server version	8.0.40-0ubuntu0.22.04.1
+-- Server version	9.1.0
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -264,6 +264,7 @@ CREATE TABLE `LOCATION` (
 
 LOCK TABLES `LOCATION` WRITE;
 /*!40000 ALTER TABLE `LOCATION` DISABLE KEYS */;
+INSERT INTO `LOCATION` VALUES ('49.4654N, 2.5313W','Channel Islands Station'),('50.8202N, 0.1373W','Portsmouth Dockyard'),('50.8278N, 0.9728W','Spithead Anchorage'),('50.8978N, 1.4044W','Royal Clarence Yard'),('51.5074N, 0.1278W','Admiralty House, London');
 /*!40000 ALTER TABLE `LOCATION` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -482,6 +483,29 @@ LOCK TABLES `SHIPS_RECEIVED` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `SHIPYARD_LOCATION`
+--
+
+DROP TABLE IF EXISTS `SHIPYARD_LOCATION`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `SHIPYARD_LOCATION` (
+  `ORIGIN_SHIPYARD` varchar(100) NOT NULL,
+  `ORIGIN_CITY` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`ORIGIN_SHIPYARD`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `SHIPYARD_LOCATION`
+--
+
+LOCK TABLES `SHIPYARD_LOCATION` WRITE;
+/*!40000 ALTER TABLE `SHIPYARD_LOCATION` DISABLE KEYS */;
+/*!40000 ALTER TABLE `SHIPYARD_LOCATION` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `SQUADRON`
 --
 
@@ -598,4 +622,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-26 22:38:41
+-- Dump completed on 2024-11-26 23:46:30
