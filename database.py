@@ -14,33 +14,38 @@ def execute_query(con, query, table_name):
 # Function to create all tables
 def create_all_tables(con):
     tables = {
-        "LOCATION": """
-            CREATE TABLE IF NOT EXISTS LOCATION (
-                Coordinates VARCHAR(50) PRIMARY KEY,
-                Location_Name VARCHAR(100)
-            );
-        """,
         "SHIP": """
             CREATE TABLE IF NOT EXISTS SHIP (
-                Ship_ID INT AUTO_INCREMENT PRIMARY KEY,
+                Ship_ID INT PRIMARY KEY,
                 Ship_Type VARCHAR(50),
                 Origin_Year INT,
                 Origin_Shipyard VARCHAR(100),
                 Gun_Count INT,
                 Coordinates VARCHAR(50),
                 Last_Port_Of_Call VARCHAR(100),
-                Last_Date_Of_Call DATE,
-                FOREIGN KEY (Coordinates) REFERENCES LOCATION(Coordinates)
+                Last_Date_Of_Call DATE
             );
         """,
         "OFFICER": """
             CREATE TABLE IF NOT EXISTS OFFICER (
-                Officer_ID INT AUTO_INCREMENT PRIMARY KEY,
+                Officer_ID INT PRIMARY KEY,
                 Name VARCHAR(100),
                 Age INT,
                 Rank_Index INT,
                 Birthplace VARCHAR(100),
                 Status VARCHAR(50)
+            );
+        """,
+        "FLAG_OFFICER": """
+            CREATE TABLE IF NOT EXISTS FLAG_OFFICER (
+                Officer_ID INT PRIMARY KEY,
+                Title VARCHAR(50),
+                Squadron VARCHAR(50),
+                Flagship INT,
+                Predecessor_ID INT,
+                FOREIGN KEY (Officer_ID) REFERENCES OFFICER(Officer_ID),
+                FOREIGN KEY (Flagship) REFERENCES SHIP(Ship_ID),
+                FOREIGN KEY (Predecessor_ID) REFERENCES OFFICER(Officer_ID)
             );
         """,
         "COMMISSIONED_OFFICER": """
@@ -74,24 +79,28 @@ def create_all_tables(con):
         """,
         "STATION": """
             CREATE TABLE IF NOT EXISTS STATION (
-                Station_ID INT AUTO_INCREMENT PRIMARY KEY,
+                Station_ID INT PRIMARY KEY,
                 Name VARCHAR(100),
-                Coordinates VARCHAR(50),
-                FOREIGN KEY (Coordinates) REFERENCES LOCATION(Coordinates)
+                Coordinates VARCHAR(50)
             );
         """,
         "PORT": """
             CREATE TABLE IF NOT EXISTS PORT (
-                Port_ID INT AUTO_INCREMENT PRIMARY KEY,
+                Port_ID INT PRIMARY KEY,
                 Name VARCHAR(100),
                 Coordinates VARCHAR(50),
-                Alignment VARCHAR(50),
-                FOREIGN KEY (Coordinates) REFERENCES LOCATION(Coordinates)
+                Alignment VARCHAR(50)
+            );
+        """,
+        "LOCATION": """
+            CREATE TABLE IF NOT EXISTS LOCATION (
+                Coordinates VARCHAR(50) PRIMARY KEY,
+                Location_Name VARCHAR(100)
             );
         """,
         "DISPATCH": """
             CREATE TABLE IF NOT EXISTS DISPATCH (
-                Dispatch_ID INT AUTO_INCREMENT PRIMARY KEY,
+                Dispatch_ID INT PRIMARY KEY,
                 Date_Issued DATE,
                 Issuing_Officer INT,
                 Orders TEXT,
@@ -102,29 +111,20 @@ def create_all_tables(con):
         """,
         "ENEMY_SHIP": """
             CREATE TABLE IF NOT EXISTS ENEMY_SHIP (
-                Enemy_ID INT AUTO_INCREMENT PRIMARY KEY,
+                Enemy_ID INT PRIMARY KEY,
                 Nationality VARCHAR(50),
                 Threat_Level INT,
                 Last_Reported_By INT,
                 Last_Sighted_At VARCHAR(50),
                 Last_Sighting DATE,
                 Current_Status VARCHAR(50),
-                FOREIGN KEY (Last_Reported_By) REFERENCES SHIP(Ship_ID),
+                FOREIGN KEY (Last_Reported_By) REFERENCES OFFICER(Officer_ID),
                 FOREIGN KEY (Last_Sighted_At) REFERENCES LOCATION(Coordinates)
-            );
-        """,
-        "FLEET": """
-            CREATE TABLE IF NOT EXISTS FLEET (
-                Fleet_ID INT AUTO_INCREMENT PRIMARY KEY,
-                Station INT,
-                Commander_in_Chief INT,
-                FOREIGN KEY (Station) REFERENCES STATION(Station_ID),
-                FOREIGN KEY (Commander_in_Chief) REFERENCES OFFICER(Officer_ID)
             );
         """,
         "SQUADRON": """
             CREATE TABLE IF NOT EXISTS SQUADRON (
-                Squadron_ID INT AUTO_INCREMENT PRIMARY KEY,
+                Squadron_ID INT PRIMARY KEY,
                 Fleet INT,
                 Commander INT,
                 Station INT,
@@ -132,6 +132,15 @@ def create_all_tables(con):
                 FOREIGN KEY (Fleet) REFERENCES FLEET(Fleet_ID),
                 FOREIGN KEY (Commander) REFERENCES OFFICER(Officer_ID),
                 FOREIGN KEY (Station) REFERENCES STATION(Station_ID)
+            );
+        """,
+        "FLEET": """
+            CREATE TABLE IF NOT EXISTS FLEET (
+                Fleet_ID INT PRIMARY KEY,
+                Station INT,
+                Commander_in_Chief INT,
+                FOREIGN KEY (Station) REFERENCES STATION(Station_ID),
+                FOREIGN KEY (Commander_in_Chief) REFERENCES OFFICER(Officer_ID)
             );
         """,
         "REPORT": """
@@ -147,7 +156,7 @@ def create_all_tables(con):
         """,
         "ENGAGEMENT": """
             CREATE TABLE IF NOT EXISTS ENGAGEMENT (
-                Engagement_ID INT AUTO_INCREMENT PRIMARY KEY,
+                Engagement_ID INT PRIMARY KEY,
                 Coordinates VARCHAR(50),
                 Time TIMESTAMP,
                 Casualties INT,
@@ -208,26 +217,6 @@ def create_all_tables(con):
                 FOREIGN KEY (Engagement_ID) REFERENCES ENGAGEMENT(Engagement_ID),
                 FOREIGN KEY (Enemy_ID) REFERENCES ENEMY_SHIP(Enemy_ID)
             );
-        """,
-        "SHIPYARD_LOCATION": """
-            CREATE TABLE IF NOT EXISTS SHIPYARD_LOCATION (
-                ORIGIN_SHIPYARD VARCHAR(100),
-                ORIGIN_CITY VARCHAR(100),
-                PRIMARY KEY (ORIGIN_SHIPYARD)
-            );
-        """,
-        "FLAG_OFFICER": """
-            CREATE TABLE IF NOT EXISTS FLAG_OFFICER (
-                Officer_ID INT PRIMARY KEY,
-                Title VARCHAR(50),
-                Squadron INT,
-                Flagship INT,
-                Predecessor_ID INT,
-                FOREIGN KEY (Officer_ID) REFERENCES OFFICER(Officer_ID),
-                FOREIGN KEY (Flagship) REFERENCES SHIP(Ship_ID),
-                FOREIGN KEY (Predecessor_ID) REFERENCES OFFICER(Officer_ID),
-                FOREIGN KEY (Squadron) REFERENCES SQUADRON(Squadron_ID)
-            );
         """
     }
 
@@ -242,7 +231,7 @@ def main():
             host='localhost',
             port=3306,
             user="root",
-            password="password",  # Replace with your MySQL password
+            password=input("Passwd: "),
             db='navy',
             cursorclass=pymysql.cursors.DictCursor
         )
@@ -272,5 +261,5 @@ def main():
             con.close()
             print("Database connection closed.")
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
