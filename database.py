@@ -152,7 +152,7 @@ def create_all_tables(con):
             CREATE TABLE IF NOT EXISTS ENGAGEMENT (
                 Engagement_ID INT AUTO_INCREMENT PRIMARY KEY,
                 Coordinates VARCHAR(50),
-                Time TIMESTAMP,
+                Time DATETIME,
                 Casualties INT,
                 Outcome VARCHAR(50),
                 FOREIGN KEY (Coordinates) REFERENCES LOCATION(Coordinates)
