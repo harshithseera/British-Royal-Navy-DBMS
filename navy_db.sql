@@ -40,6 +40,7 @@ CREATE TABLE `COMMISSIONED_OFFICER` (
 
 LOCK TABLES `COMMISSIONED_OFFICER` WRITE;
 /*!40000 ALTER TABLE `COMMISSIONED_OFFICER` DISABLE KEYS */;
+INSERT INTO `COMMISSIONED_OFFICER` VALUES (1,10,2,'Captain'),(4,8,3,'Lieutenant');
 /*!40000 ALTER TABLE `COMMISSIONED_OFFICER` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -134,6 +135,7 @@ DROP TABLE IF EXISTS `ENEMY_SHIP`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ENEMY_SHIP` (
   `Enemy_ID` int NOT NULL,
+  `Name` varchar(100) DEFAULT NULL,
   `Nationality` varchar(50) DEFAULT NULL,
   `Threat_Level` int DEFAULT NULL,
   `Last_Reported_By` int DEFAULT NULL,
@@ -292,6 +294,7 @@ CREATE TABLE `OFFICER` (
 
 LOCK TABLES `OFFICER` WRITE;
 /*!40000 ALTER TABLE `OFFICER` DISABLE KEYS */;
+INSERT INTO `OFFICER` VALUES (1,'John Nelson',35,5,'London','Active'),(2,'James Cook',40,4,'Yorkshire','Retired'),(3,'Horatio Hornblower',28,3,'Kent','Active'),(4,'Francis Drake',45,6,'Plymouth','Retired'),(5,'Edward Pellew',50,4,'Exeter','Active'),(6,'William Bligh',42,5,'Bristol','Active'),(7,'Thomas Cochrane',30,3,'Edinburgh','Active'),(8,'John Jervis',55,6,'London','Retired'),(9,'Richard Howe',60,7,'London','Retired'),(10,'Nelson Hardy',38,5,'Portsmouth','Active'),(11,'George Vancouver',36,4,'Kingston upon Thames','Active'),(12,'David Farragut',45,6,'New York','Retired'),(13,'William Howe',50,7,'London','Active'),(14,'Alexander Beatty',40,4,'Belfast','Active'),(15,'John Byron',50,5,'London','Retired');
 /*!40000 ALTER TABLE `OFFICER` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -319,6 +322,7 @@ CREATE TABLE `PETTY_OFFICER` (
 
 LOCK TABLES `PETTY_OFFICER` WRITE;
 /*!40000 ALTER TABLE `PETTY_OFFICER` DISABLE KEYS */;
+INSERT INTO `PETTY_OFFICER` VALUES (3,4,'Quartermaster'),(8,7,'Cook');
 /*!40000 ALTER TABLE `PETTY_OFFICER` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -384,7 +388,9 @@ DROP TABLE IF EXISTS `SHIP`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `SHIP` (
   `Ship_ID` int NOT NULL,
+  `Name` varchar(100) DEFAULT NULL,
   `Ship_Type` varchar(50) DEFAULT NULL,
+  `Tonnage` int DEFAULT NULL,
   `Origin_Year` int DEFAULT NULL,
   `Origin_Shipyard` varchar(100) DEFAULT NULL,
   `Gun_Count` int DEFAULT NULL,
@@ -401,6 +407,7 @@ CREATE TABLE `SHIP` (
 
 LOCK TABLES `SHIP` WRITE;
 /*!40000 ALTER TABLE `SHIP` DISABLE KEYS */;
+INSERT INTO `SHIP` VALUES (1,'HMS Victory','Ship of the Line',3500,1765,'Chatham Dockyard',104,'51.4423,-0.3454','Portsmouth','1805-10-21'),(2,'HMS Temeraire','Second Rate',2100,1798,'Chatham Dockyard',98,'51.4833,-0.2311','Portsmouth','1805-10-20'),(3,'HMS Agamemnon','Third Rate',1600,1781,'Bucklers Hard',64,'50.7989,-1.1123','Plymouth','1805-10-19'),(4,'HMS Defiance','Fourth Rate',1450,1783,'Deptford Dockyard',74,'51.4791,-0.0226','Falmouth','1805-10-18'),(5,'HMS Dreadnought','First Rate',3000,1801,'Portsmouth Dockyard',98,'50.8198,-1.0916','London','1805-10-17'),(6,'HMS Renown','Battlecruiser',25000,1916,'Portsmouth Dockyard',8,'50.8242,-1.2658','Gibraltar','1941-08-15'),(7,'HMS Revenge','Battleship',29000,1915,'Plymouth Dockyard',12,'51.1673,-0.4184','Portsmouth','1942-03-10'),(8,'HMS Vanguard','Battleship',42000,1944,'Clydebank Shipyards',10,'55.8754,-4.3912','Belfast','1944-06-14'),(9,'HMS Exeter','Light Cruiser',8600,1929,'Chatham Dockyard',6,'50.7192,-1.6120','Hong Kong','1939-12-10'),(10,'HMS Ark Royal','Aircraft Carrier',22000,1955,'Plymouth Dockyard',20,'50.3851,-4.2230','Malta','1956-04-23');
 /*!40000 ALTER TABLE `SHIP` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -558,6 +565,7 @@ CREATE TABLE `STATION` (
 
 LOCK TABLES `STATION` WRITE;
 /*!40000 ALTER TABLE `STATION` DISABLE KEYS */;
+INSERT INTO `STATION` VALUES (1,'Portsmouth Naval Base','50.7957,-1.1066'),(2,'Chatham Dockyard','51.3800,-0.5280'),(3,'Devonport Dockyard','50.3714,-4.1453'),(4,'Faslane Naval Base','56.0013,-4.8192'),(5,'Rosyth Dockyard','56.0213,-3.4532');
 /*!40000 ALTER TABLE `STATION` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -610,6 +618,7 @@ CREATE TABLE `WARRANT_OFFICER` (
 
 LOCK TABLES `WARRANT_OFFICER` WRITE;
 /*!40000 ALTER TABLE `WARRANT_OFFICER` DISABLE KEYS */;
+INSERT INTO `WARRANT_OFFICER` VALUES (2,5,'Boatswain','Admiralty'),(7,7,'Gunner','Royal Navy');
 /*!40000 ALTER TABLE `WARRANT_OFFICER` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -622,4 +631,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-26 23:46:30
+-- Dump completed on 2024-11-27  0:16:34

@@ -23,7 +23,9 @@ def create_all_tables(con):
         "SHIP": """
             CREATE TABLE IF NOT EXISTS SHIP (
                 Ship_ID INT AUTO_INCREMENT PRIMARY KEY,
+                Name VARCHAR(100),
                 Ship_Type VARCHAR(50),
+                Tonnage INT,
                 Origin_Year INT,
                 Origin_Shipyard VARCHAR(100),
                 Gun_Count INT,
@@ -103,6 +105,7 @@ def create_all_tables(con):
         "ENEMY_SHIP": """
             CREATE TABLE IF NOT EXISTS ENEMY_SHIP (
                 Enemy_ID INT AUTO_INCREMENT PRIMARY KEY,
+                Name VARCHAR(100),
                 Nationality VARCHAR(50),
                 Threat_Level INT,
                 Last_Reported_By INT,
