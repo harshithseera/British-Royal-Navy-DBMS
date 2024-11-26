@@ -97,6 +97,7 @@ CREATE TABLE `DISPATCH` (
 
 LOCK TABLES `DISPATCH` WRITE;
 /*!40000 ALTER TABLE `DISPATCH` DISABLE KEYS */;
+INSERT INTO `DISPATCH` VALUES (1,'1805-10-15',1,'Proceed to Trafalgar and engage enemy fleet.',1),(2,'1805-10-14',2,'Reinforce the blockade at Cadiz.',2),(3,'1805-10-13',3,'Patrol the English Channel for enemy ships.',3),(4,'1805-10-12',4,'Escort merchant convoy to Gibraltar.',4),(5,'1805-10-11',5,'Deliver supplies to allied forces in Malta.',5);
 /*!40000 ALTER TABLE `DISPATCH` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -156,6 +157,7 @@ CREATE TABLE `ENEMY_SHIP` (
 
 LOCK TABLES `ENEMY_SHIP` WRITE;
 /*!40000 ALTER TABLE `ENEMY_SHIP` DISABLE KEYS */;
+INSERT INTO `ENEMY_SHIP` VALUES (1,'Le Redoutable','French',5,1,'50.8202N, 0.1373W','1805-10-20','Engaged'),(2,'Santísima Trinidad','Spanish',4,2,'50.8278N, 0.9728W','1805-10-18','Sunk'),(3,'Le Bucentaure','French',4,3,'49.4654N, 2.5313W','1805-10-19','Damaged'),(4,'L’Orient','French',5,4,'51.5074N, 0.1278W','1805-10-17','Destroyed'),(5,'Nuestra Señora de la Santísima Concepción','Spanish',3,5,'50.8978N, 1.4044W','1805-10-15','Retreated');
 /*!40000 ALTER TABLE `ENEMY_SHIP` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -243,6 +245,7 @@ CREATE TABLE `FLEET` (
 
 LOCK TABLES `FLEET` WRITE;
 /*!40000 ALTER TABLE `FLEET` DISABLE KEYS */;
+INSERT INTO `FLEET` VALUES (1,1,1),(2,2,2),(3,3,3),(4,4,4),(5,5,5);
 /*!40000 ALTER TABLE `FLEET` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -376,6 +379,7 @@ CREATE TABLE `REPORT` (
 
 LOCK TABLES `REPORT` WRITE;
 /*!40000 ALTER TABLE `REPORT` DISABLE KEYS */;
+INSERT INTO `REPORT` VALUES (1,1,'Completed','Report on the successful engagement of the enemy ship Le Redoutable.'),(2,2,'Ongoing','Patrol activity near Spithead Anchorage. No unusual sightings.'),(3,3,'Delayed','Delayed response due to adverse weather near the Channel Islands Station.'),(4,4,'Completed','Routine inspection of HMS Victory docked at Portsmouth Dockyard.'),(5,5,'Pending','Awaiting further orders from Admiralty House for deployment.');
 /*!40000 ALTER TABLE `REPORT` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -631,4 +635,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-27  0:16:34
+-- Dump completed on 2024-11-27  0:35:36
