@@ -2,12 +2,11 @@ import pymysql
 import subprocess as sp
 
 # Function to execute table creation
-def execute_query(con, query, table_name):
+def create_table(con, query, table_name):
     try:
         with con.cursor() as cursor:
             cursor.execute(query)
             con.commit()
-            print(f"Table {table_name} created successfully!")
     except pymysql.MySQLError as e:
         print(f"Error creating table {table_name}: {e}")
 
@@ -235,7 +234,9 @@ def create_all_tables(con):
     }
 
     for table_name, query in tables.items():
-        execute_query(con, query, table_name)
+        create_table(con, query, table_name)
+
+    print("All tables initialised")
 
 # Main function
 def main():

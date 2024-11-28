@@ -1,15 +1,25 @@
-from prettytable import from_db_cursor
 import pymysql
+from datetime import date
+import prettytable
+
+def get_table(data):
+    if not data:
+        print("No data available.\n")
+        return
+
+    table = prettytable.PrettyTable(data[0].keys())
+    table.add_rows([row.values() for row in data])
+    return table.get_string()
 
 # Manage connection to SQL db
 def connect_db():
 
-	pwd = input("Might we see some credentials?\n");
+	#pwd = input("Might we see some credentials?\n");
 
 	return pymysql.connect(
 		host = 'localhost',
 		user = 'root',
-		password = pwd,
+		password = 'helloThere@757',
 		database = 'navy',
 		cursorclass=pymysql.cursors.DictCursor
 	)
@@ -26,7 +36,6 @@ def execute_query(con:pymysql.Connection, query, values=None):
             else:
                 cursor.execute(query)
             con.commit()
-            print("Query executed successfully!")
     except pymysql.MySQLError as e:
         print(f"Error executing query: {e}")
 
@@ -50,23 +59,26 @@ def update_data(con, table, updates, condition_column, condition_value):
     execute_query(con, query, values)
     
 def select_data(con, table, columns, condition=None):
-	try:
-		columns = ', '.join(columns)
-		if condition:
-			query = f"SELECT {columns} FROM {table} WHERE {condition}"
-			with con.cursor() as cursor:
-				cursor.execute(query, (condition,))
-				result = cursor.fetchall()
-				return result
-		else:
-			query = f"SELECT {columns} FROM {table}"
-			with con.cursor() as cursor:
-				cursor.execute(query)
-				result = cursor.fetchall()
-				return result
-	except pymysql.MySQLError as e:
-		print(f"Error executing query: {e}")
-		return None
+    try:
+        columns = ', '.join(columns)
+        if condition:
+            query = f"SELECT {columns} FROM {table} WHERE {condition}"
+            with con.cursor() as cursor:
+                cursor.execute(query)
+                result = cursor.fetchall()
+                return result
+        else:
+            query = f"SELECT {columns} FROM {table}"
+            with con.cursor() as cursor:
+                cursor.execute(query)
+                result = cursor.fetchall()
+                return result
+    except pymysql.MySQLError as e:
+        print(f"Error executing query: {e}")
+        return None
+    except Exception as e:
+        print(f"Error executing query: {e}")
+        return None
     
 def get_last_inserted_id(con):
 	query = "SELECT LAST_INSERT_ID()"
@@ -79,26 +91,28 @@ def get_last_inserted_id(con):
 # Addition queries
 
 def add_ship(connection):
-    ship_details = {}
-    ship_details["Name"] = input("Enter ship name:\n")
-    ship_details["Ship_Type"] = input("Enter ship type:\n")
-    ship_details["Tonnage"] = input("Enter ship tonnage:\n")
-    ship_details["Origin_Year"] = input("Enter origin year:\n")
-    ship_details["Origin_Shipyard"] = input("Enter origin shipyard:\n")
-    ship_details["Gun_Count"] = input("Enter gun count:\n")
-    ship_details["Coordinates"] = input("Enter ship coordinates:\n")
-    ship_details["Last_Port_Of_Call"] = input("Enter last port of call:\n")
-    ship_details["Last_Date_Of_Call"] = input("Enter last date of call:\n")
+    ship_details = {
+        "Name": input("Enter ship name:\n"),
+        "Ship_Type": input("Enter ship type:\n"),
+        "Tonnage" : input("Enter ship tonnage:\n"),
+        "Origin_Year" : input("Enter origin year:\n"),
+        "Origin_Shipyard" : input("Enter origin shipyard:\n"),
+        "Gun_Count" : input("Enter gun count:\n"),
+        "Coordinates" : input("Enter ship coordinates:\n"),
+        "Last_Port_Of_Call" : input("Enter last port of call:\n"),
+        "Last_Date_Of_Call" : input("Enter last date of call:\n")
+    }
 
     insert_data(connection, "SHIP", ship_details)
 
 def add_officer(connection):
-    officer_details = {}
-    officer_details["Name"] = input("Enter officer name:\n")
-    officer_details["Age"] = input("Enter officer age:\n")
-    officer_details["Rank_Index"] = input("Enter officer rank index:\n")
-    officer_details["Birthplace"] = input("Enter officer birthplace:\n")
-    officer_details["Status"] = input("Enter officer status:\n")
+    officer_details = {
+        "Name" : input("Enter officer name:\n"),
+        "Age" : input("Enter officer age:\n"),
+        "Rank_Index" : input("Enter officer rank index:\n"),
+        "Birthplace" : input("Enter officer birthplace:\n"),
+        "Status" : input("Enter officer status:\n")
+    }
 
     insert_data(connection, "OFFICER", officer_details)
 
@@ -106,14 +120,13 @@ def add_officer(connection):
 def make_flag_officer(connection):
     add_officer(connection)
     
-    officer_details = {}
-
-    officer_details["Officer_ID"] = str(get_last_inserted_id(connection))
-
-    officer_details["Title"] = input("Enter officer name:\n")
-    officer_details["Squadron"] = input("Enter officer's squadron:\n")
-    officer_details["Flagship_ID"] = input("Enter officer's flagship ID:\n")
-    officer_details["Predecessor_ID"] = input("Enter officer's predecessor ID:\n")
+    officer_details = {
+        "Officer_ID" : str(get_last_inserted_id(connection)),
+        "Title" : input("Enter officer name:\n"),
+        "Squadron" : input("Enter officer's squadron:\n"),
+        "Flagship_ID" : input("Enter officer's flagship ID:\n"),
+        "Predecessor_ID" : input("Enter officer's predecessor ID:\n")
+    }
 
     insert_data(connection, "FLAG_OFFICER", officer_details)
     print("Flag officer added successfully!")
@@ -121,12 +134,12 @@ def make_flag_officer(connection):
 def make_commissioned_officer(connection):
     add_officer(connection)
 	
-    officer_details = {}
-    officer_details["Officer_ID"] = str(get_last_inserted_id(connection))
-
-    officer_details["Seniority"] = input("Enter officer's seniority:\n")
-    officer_details["Ship_ID"] = input("Enter officer's ship ID:\n")
-    officer_details["Position"] = input("Enter officer's position:\n")
+    officer_details = {
+        "Officer_ID" : str(get_last_inserted_id(connection)),
+        "Seniority" : input("Enter officer's seniority:\n"),
+        "Ship_ID" : input("Enter officer's ship ID:\n"),
+        "Position" : input("Enter officer's position:\n")
+    }
 
     insert_data(connection, "COMMISSIONED_OFFICER", officer_details)	
     print("Commissioned officer added successfully!")
@@ -134,13 +147,11 @@ def make_commissioned_officer(connection):
 def make_warrant_officer(connection):
     add_officer(connection)
 
-    officer_details = {}
-	
-    officer_details["Officer_ID"] = str(get_last_inserted_id(connection))
-    officer_details["Role"] = input("Enter officer's role:\n")
-    officer_details["Appointing_Agency"] = input("Enter officer's appointing agency:\n")
-
-    str(get_last_inserted_id(connection))
+    officer_details = {
+        "Officer_ID" : str(get_last_inserted_id(connection)),
+        "Role" : input("Enter officer's role:\n"),
+        "Appointing_Agency" : input("Enter officer's appointing agency:\n")
+    }
 
     insert_data(connection, "WARRANT_OFFICER", officer_details)
     print("Warrant officer added successfully!")
@@ -148,33 +159,34 @@ def make_warrant_officer(connection):
 def make_petty_officer(connection):
     add_officer(connection)
 	
-    officer_details = {}
-	
-    officer_details["Officer_ID"] = str(get_last_inserted_id(connection))
-    officer_details["Ship_ID"] = input("Enter officer's ship ID:\n")
-    officer_details["Rating"] = input("Enter officer's rating:\n")
+    officer_details = {
+        "Officer_ID" : str(get_last_inserted_id(connection)),
+        "Ship_ID" : input("Enter officer's ship ID:\n"),
+        "Rating" : input("Enter officer's rating:\n")
+    }
 
     insert_data(connection, "PETTY_OFFICER", officer_details)
     print("Petty officer added successfully!")
 
 def add_crew(connection):
 
-    crew_details = {}
-    crew_details["Name"] = input("Enter crew member name:\n")
-    crew_details["Age"] = input("Enter crew member age:\n")
-    crew_details["Role"] = input("Enter crew member role:\n")
-    crew_details["Status"] = input("Enter crew member status:\n")
+    crew_details = {
+        "Name" : input("Enter crew member name:\n"),
+        "Age" : input("Enter crew member age:\n"),
+        "Role" : input("Enter crew member role:\n"),
+        "Status" : input("Enter crew member status:\n")
+    }
 
     insert_data(connection, "CREW", crew_details)
 
 
 def add_dispatch(connection):
-    dispatch_details = {}
-	
-    dispatch_details["Date_Issued"] = input("Enter date issued:\n")
-    dispatch_details["Issuing_Officer"] = input("Enter issuing officer:\n")
-    dispatch_details["Orders"] = input("Enter orders:\n")
-    dispatch_details["Dispatch_Vessel"] = input("Enter dispatch vessel:\n")
+    dispatch_details = {
+    "Date_Issued" : input("Enter date issued:\n"),
+    "Issuing_Officer" : input("Enter issuing officer:\n"),
+    "Orders" : input("Enter orders:\n"),
+    "Dispatch_Vessel" : input("Enter dispatch vessel:\n")
+    }
 	
     insert_data(connection, "DISPATCH", dispatch_details)
     dispatch_id = get_last_inserted_id(connection)
@@ -325,7 +337,7 @@ def get_ships_of_type(connection):
 		return
 	
 	print("Ships of type:\n")
-	print(from_db_cursor(ships))
+	print(get_table(ships))
 
 def get_dispatches_between(connection):
 	start_date = input("Enter start date (YYYY-MM-DD):\n")
@@ -337,17 +349,17 @@ def get_dispatches_between(connection):
 		return
 
 	print("Dispatches between dates:\n")
-	print(from_db_cursor(dispatches))
+	print(get_table(dispatches))
 
 def get_active_flag_officers(connection):
-    flag_officers = select_data(connection, "FLAG_OFFICER AS f JOIN OFFICER AS o ON f.Officer_ID = o.Officer_ID", ['Name'], "Status = 'Active'")
+    flag_officers = select_data(connection, "OFFICER NATURAL JOIN FLAG_OFFICER", ['Name'], "Status = 'Active'")
 	
     if (flag_officers == None):
         print("No flag officers found")
         return
 	
     print("Active flag officers:\n")
-    print(from_db_cursor(flag_officers))
+    print(get_table(flag_officers))
 
 # Projection queries
 
@@ -360,7 +372,7 @@ def get_ship_names_with_higher_gun_count(connection):
 		return
 
 	print("Ships with higher gun count:\n")
-	print(from_db_cursor(ships))
+	print(get_table(ships))
 
 def threats_worse_than(connection):
 	threat_level = input("Enter threat level:\n")
@@ -371,7 +383,7 @@ def threats_worse_than(connection):
 		return
 
 	print("Worse threats:\n")
-	print(from_db_cursor(ships))
+	print(get_table(ships))
 
 
 # Aggregation queries
@@ -384,7 +396,7 @@ def get_biggest_threat(connection):
 		return
 
 	print("Biggest threat:\n")
-	print(from_db_cursor(ship))
+	print(get_table(ship))
 
 def get_total_gun_count(connection):
 	squadron_id = input("Enter squadron ID:\n")
@@ -394,7 +406,7 @@ def get_total_gun_count(connection):
 		print("Error executing query")
 		return
 
-	print(f"Total gun count: {gun_count[0]['SUM(Gun_Count)']}")
+	print(f"Total gun count: {gun_count.fetchone()[0]['SUM(Gun_Count)']}")
 
 def get_juniormost_commissioned_officer_on_ship(connection):
 	ship_id = input("Enter ship ID:\n")
@@ -405,43 +417,42 @@ def get_juniormost_commissioned_officer_on_ship(connection):
 		return
 
 	print("Juniormost commissioned officer:\n")
-	print(from_db_cursor(officer))
+	print(get_table(officer))
 
 # Search queries
 
 def get_port_matching_name(connection):
-	word = input("Enter word:\n")
-	ports = select_data(connection, "PORT", ["Port_ID", "Name"], f"Name LIKE '%{word}%'")
+    word = input("Enter word:\n")
+    ports = select_data(connection, "PORT", ["Port_ID", "Name"], f"Name LIKE '%{word}%'")
 
-	if (ports == None):
-		print("No ports found")
-		return
-
-	print("Ports matching name:\n")
-	for port in ports:
-		print(f"Port ID: {port['Port_ID']}", f"Name: {port['Name']}")
+    if (ports == None):
+        print("No ports found")
+        return
+    
+    print("Ports matching name:\n")
+    print(get_table(ports))
 
 def get_captain_of_ship(connection):
 	ship_id = input("Enter ship ID:\n")
-	captain = select_data(connection, "COMMISSIONED_OFFICER", ["Officer_ID", "Name"], f"Position = 'Captain' AND Ship_ID = {ship_id}")
+     
+	captain = select_data(connection, "OFFICER NATURAL JOIN COMMISSIONED_OFFICER", ["o.Officer_ID as Officer_ID", "o.Name as Name"], f"c.Position = 'Captain' AND c.Ship = {ship_id}")
 
 	if (captain == None):
 		print("No captain found")
 		return
 
-	print(from_db_cursor(captain))
+	print(get_table(captain))
 
-def get_flag_officers_of_colour(connection):
-	colour = input("Enter colour:\n")
-	officers = select_data(connection, "FLAG_OFFICER", ["Officer_ID", "Name"], f"Colour = {colour}")
+def get_flag_officers_of_title(connection):
+	title = input("Enter title:\n")
+	officers = select_data(connection, "OFFICER NATURAL JOIN FLAG_OFFICER", ["o.Officer_ID as Officer_ID", "o.Name as Name"], f"f.Title = {title}")
 
 	if (officers == None):
 		print("No flag officers found")
 		return
 
 	print("Flag officers of colour:\n")
-	for officer in officers:
-		print(f"Officer ID: {officer['Officer_ID']}", f"Name: {officer['Name']}")
+	print(get_table(officers))
 
 def get_commissioned_officer_of_rank(connection):
 	ship_id = input("Enter ship ID:\n")
@@ -452,7 +463,7 @@ def get_commissioned_officer_of_rank(connection):
 		print("No commissioned officer found")
 		return
 
-	print(from_db_cursor(officer))
+	print(get_table(officer))
 
 
 # Analysis queries
@@ -486,12 +497,16 @@ def delete_obsolete_engagements(connection):
 	print("Obsolete engagements deleted successfully!")
 
 def show_all_of(connection, table):
+
     result = select_data(connection, table, ["*"])
+    if table.endswith("OFFICER") and table != "OFFICER":
+        result = select_data(connection, f"OFFICER NATURAL JOIN {table}", ["*"])
+
     if result == None:
         print("No data found")
         return
     
-    print(from_db_cursor(result))
+    print(get_table(result))
         
 
 from database import create_all_tables
@@ -502,20 +517,6 @@ def main():
     create_all_tables(connection)
 
     command_map = {
-        "show all ships": lambda: show_all_of(connection, "SHIP"),
-        "show all officers": lambda: show_all_of(connection, "OFFICER"),
-        "show all crew": lambda: show_all_of(connection, "CREW"),
-        "show all dispatches": lambda: show_all_of(connection, "DISPATCH"),
-        "show all enemy ships": lambda: show_all_of(connection, "ENEMY_SHIP"),
-        "show all squadrons": lambda: show_all_of(connection, "SQUADRON"),
-        "show all fleets": lambda: show_all_of(connection, "FLEET"),
-        "show all reports": lambda: show_all_of(connection, "REPORT"),
-        "show all engagements": lambda: show_all_of(connection, "ENGAGEMENT"),
-        "show all stations": lambda: show_all_of(connection, "STATION"),
-        "show all ports": lambda: show_all_of(connection, "PORT"),
-        "show all flag officers": lambda: show_all_of(connection, "FLAG_OFFICER"),
-        "show all commissioned officers": lambda: show_all_of(connection, "COMMISSIONED_OFFICER"),
-        "show all warrant officers": lambda: show_all_of(connection, "WARRANT_OFFICER"),
         "add ship": lambda: add_ship(connection),
         "add flag officer": lambda: make_flag_officer(connection),
         "add commissioned officer": lambda: make_commissioned_officer(connection),
@@ -529,16 +530,42 @@ def main():
         "add engagement": lambda: add_engagement(connection),
         "add station": lambda: add_station(connection),
         "add port": lambda: add_port(connection),
+		"show all ships": lambda: show_all_of(connection, "SHIP"),
+        "show all officers": lambda: show_all_of(connection, "OFFICER"),
+        "show all crew": lambda: show_all_of(connection, "CREW"),
+        "show all dispatches": lambda: show_all_of(connection, "DISPATCH"),
+        "show all enemy ships": lambda: show_all_of(connection, "ENEMY_SHIP"),
+        "show all squadrons": lambda: show_all_of(connection, "SQUADRON"),
+        "show all fleets": lambda: show_all_of(connection, "FLEET"),
+        "show all reports": lambda: show_all_of(connection, "REPORT"),
+        "show all engagements": lambda: show_all_of(connection, "ENGAGEMENT"),
+        "show all stations": lambda: show_all_of(connection, "STATION"),
+        "show all ports": lambda: show_all_of(connection, "PORT"),
+        "show all flag officers": lambda: show_all_of(connection, "FLAG_OFFICER"),
+        "show all commissioned officers": lambda: show_all_of(connection, "COMMISSIONED_OFFICER"),
+        "show all warrant officers": lambda: show_all_of(connection, "WARRANT_OFFICER"),
+        "show all locations": lambda: show_all_of(connection, "LOCATION"),
         "promote officer": lambda: promote_officer(connection),
+        "update last enemy sighting": lambda: update_last_enemy_sighting(connection),
+        "update officer status": lambda: update_officer_status(connection),
+        "update ship status": lambda: update_ship_status(connection),
+        "update port alignment": lambda: update_port_alignment(connection),
 		"get juniormost commissioned officer on ship": lambda: get_juniormost_commissioned_officer_on_ship(connection),
         "get port matching name": lambda: get_port_matching_name(connection),
         "get captain of ship": lambda: get_captain_of_ship(connection),
-        "get flag officers of colour": lambda: get_flag_officers_of_colour(connection),
+        "get flag officers of title": lambda: get_flag_officers_of_title(connection),
         "get dispatches between dates": lambda: get_dispatches_between(connection),
         "get active flag officers": lambda: get_active_flag_officers(connection),
         "get ship names with higher gun count": lambda: get_ship_names_with_higher_gun_count(connection),
-        "threats worse than": lambda: threats_worse_than(connection)
+        "get threats worse than": lambda: threats_worse_than(connection)
     }
+
+    # show all commands to the user with numbers
+
+    print("\n\nAvailable commands:")
+
+    for i, command in enumerate(command_map.keys()):
+        print(f"{i+1}. {command}")
 	
     print("Type 'exit' to leave the archives")
 
@@ -547,8 +574,9 @@ def main():
     
         if user_input == "exit": break
 
-        command = command_map.get(user_input)
+        command = command_map[command_map.keys()[int(user_input) - 1]] if user_input.isdigit() else command_map.get(user_input)
         if command:
+            print("\n")
             command()
         else:
             print("Unknown command. Please try again.\n")
