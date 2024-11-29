@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 9.0.1, for macos14.7 (arm64)
+-- MySQL dump 10.13  Distrib 8.0.40, for Linux (x86_64)
 --
 -- Host: localhost    Database: navy
 -- ------------------------------------------------------
--- Server version	9.1.0
+-- Server version	8.0.40-0ubuntu0.22.04.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -40,7 +40,7 @@ CREATE TABLE `COMMISSIONED_OFFICER` (
 
 LOCK TABLES `COMMISSIONED_OFFICER` WRITE;
 /*!40000 ALTER TABLE `COMMISSIONED_OFFICER` DISABLE KEYS */;
-INSERT INTO `COMMISSIONED_OFFICER` VALUES (1,1,1,'Captain'),(2,2,2,'Lieutenant'),(3,3,3,'Commander');
+INSERT INTO `COMMISSIONED_OFFICER` VALUES (2,2,2,'Lieutenant'),(3,3,3,'Captain'),(4,0,1,'Second Lieutenant');
 /*!40000 ALTER TABLE `COMMISSIONED_OFFICER` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -202,6 +202,7 @@ DROP TABLE IF EXISTS `FLAG_OFFICER`;
 CREATE TABLE `FLAG_OFFICER` (
   `Officer_ID` int NOT NULL,
   `Title` varchar(50) DEFAULT NULL,
+  `Colour` varchar(10) DEFAULT NULL,
   `Squadron` int DEFAULT NULL,
   `Flagship` int DEFAULT NULL,
   `Predecessor_ID` int DEFAULT NULL,
@@ -222,7 +223,7 @@ CREATE TABLE `FLAG_OFFICER` (
 
 LOCK TABLES `FLAG_OFFICER` WRITE;
 /*!40000 ALTER TABLE `FLAG_OFFICER` DISABLE KEYS */;
-INSERT INTO `FLAG_OFFICER` VALUES (15,'Admiral',1,1,NULL),(16,'Vice-Admiral',2,2,15),(17,'Rear-Admiral',3,3,16);
+INSERT INTO `FLAG_OFFICER` VALUES (1,'Rear Admiral','Blue',1,1,NULL),(15,'Admiral','Red',1,1,16),(16,'Vice-Admiral','Red',2,2,15),(17,'Rear-Admiral','White',3,3,16);
 /*!40000 ALTER TABLE `FLAG_OFFICER` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -275,7 +276,7 @@ CREATE TABLE `LOCATION` (
 
 LOCK TABLES `LOCATION` WRITE;
 /*!40000 ALTER TABLE `LOCATION` DISABLE KEYS */;
-INSERT INTO `LOCATION` VALUES ('50.3755N, 4.1426W','Plymouth Harbour'),('50.8225N, 0.3234W','Portsmouth Dockyard'),('50.8292N, 0.9517W','Deal Beach'),('51.3810N, 2.3580W','Bristol Dockyard'),('51.3875N, 0.1345W','Chatham Dockyard'),('51.4545N, 3.5986W','Port of Bristol'),('51.5074N, 0.1278W','Port of London'),('52.2053N, 0.1218E','Port of Hull'),('52.2425N, 1.6113W','Port of Leith'),('54.9784N, 1.6174W','Port of Newcastle');
+INSERT INTO `LOCATION` VALUES ('43.1202N, 5.9315E','Port de Toulon'),('43N, 5E','Port of Brest'),('50.3755N, 4.1426W','Plymouth Harbour'),('50.8225N, 0.3234W','Portsmouth Dockyard'),('50.8292N, 0.9517W','Deal Beach'),('51.3810N, 2.3580W','Bristol Dockyard'),('51.3875N, 0.1345W','Chatham Dockyard'),('51.4545N, 3.5986W','Port of Bristol'),('51.5074N, 0.1278W','Port of London'),('52.2053N, 0.1218E','Port of Hull'),('52.2425N, 1.6113W','Port of Leith'),('54.9784N, 1.6174W','Port of Newcastle');
 /*!40000 ALTER TABLE `LOCATION` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -294,7 +295,7 @@ CREATE TABLE `OFFICER` (
   `Birthplace` varchar(100) DEFAULT NULL,
   `Status` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`Officer_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -350,7 +351,7 @@ CREATE TABLE `PORT` (
   PRIMARY KEY (`Port_ID`),
   KEY `Coordinates` (`Coordinates`),
   CONSTRAINT `port_ibfk_1` FOREIGN KEY (`Coordinates`) REFERENCES `LOCATION` (`Coordinates`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -359,7 +360,7 @@ CREATE TABLE `PORT` (
 
 LOCK TABLES `PORT` WRITE;
 /*!40000 ALTER TABLE `PORT` DISABLE KEYS */;
-INSERT INTO `PORT` VALUES (1,'Plymouth','50.3755N, 4.1426W','Royal Navy'),(2,'Portsmouth','50.8225N, 0.3234W','Royal Navy'),(3,'Deal','50.8292N, 0.9517W','Royal Navy'),(4,'Bristol','51.3810N, 2.3580W','Royal Navy'),(5,'Chatham','51.3875N, 0.1345W','Royal Navy'),(6,'Bristol','51.4545N, 3.5986W','Royal Navy'),(7,'London','51.5074N, 0.1278W','Royal Navy'),(8,'Hull','52.2053N, 0.1218E','Royal Navy'),(9,'Leith','52.2425N, 1.6113W','Royal Navy'),(10,'Newcastle','54.9784N, 1.6174W','Royal Navy');
+INSERT INTO `PORT` VALUES (1,'Plymouth','50.3755N, 4.1426W','British Royal Navy'),(2,'Portsmouth','50.8225N, 0.3234W','British Royal Navy'),(3,'Deal','50.8292N, 0.9517W','British Royal Navy'),(4,'Bristol','51.3810N, 2.3580W','British Royal Navy'),(5,'Chatham','51.3875N, 0.1345W','British Royal Navy'),(6,'Bristol','51.4545N, 3.5986W','British Royal Navy'),(7,'London','51.5074N, 0.1278W','British Royal Navy'),(8,'Hull','52.2053N, 0.1218E','British Royal Navy'),(9,'Leith','52.2425N, 1.6113W','British Royal Navy'),(10,'Newcastle','54.9784N, 1.6174W','British Royal Navy');
 /*!40000 ALTER TABLE `PORT` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -413,7 +414,7 @@ CREATE TABLE `SHIP` (
   PRIMARY KEY (`Ship_ID`),
   KEY `Coordinates` (`Coordinates`),
   CONSTRAINT `ship_ibfk_1` FOREIGN KEY (`Coordinates`) REFERENCES `LOCATION` (`Coordinates`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -641,7 +642,7 @@ CREATE TABLE `WARRANT_OFFICER` (
 
 LOCK TABLES `WARRANT_OFFICER` WRITE;
 /*!40000 ALTER TABLE `WARRANT_OFFICER` DISABLE KEYS */;
-INSERT INTO `WARRANT_OFFICER` VALUES (4,1,'Boatswain','Royal Navy'),(5,2,'Purser','Royal Navy'),(6,3,'Gunner','Royal Navy');
+INSERT INTO `WARRANT_OFFICER` VALUES (5,2,'Purser','Royal Navy'),(6,3,'Gunner','Royal Navy');
 /*!40000 ALTER TABLE `WARRANT_OFFICER` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -654,4 +655,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-28 16:22:47
+-- Dump completed on 2024-11-29 20:48:37

@@ -1,7 +1,6 @@
 import pymysql
 import subprocess as sp
 
-# Function to execute table creation
 def create_table(con, query, table_name):
     try:
         with con.cursor() as cursor:
@@ -10,7 +9,6 @@ def create_table(con, query, table_name):
     except pymysql.MySQLError as e:
         print(f"Error creating table {table_name}: {e}")
 
-# Function to create all tables
 def create_all_tables(con):
     tables = {
         "LOCATION": """
@@ -235,46 +233,3 @@ def create_all_tables(con):
 
     for table_name, query in tables.items():
         create_table(con, query, table_name)
-
-    print("All tables initialised")
-
-# Main function
-def main():
-    try:
-        # Connect to the database
-        con = pymysql.connect(
-            host='localhost',
-            port=3306,
-            user="root",
-            password="password",  # Replace with your MySQL password
-            db='navy',
-            cursorclass=pymysql.cursors.DictCursor
-        )
-        print("Connected to the database successfully!")
-
-        while True:
-            sp.call('clear', shell=True)
-            print("==== British Royal Navy DBMS ====")
-            print("1. Create All Tables")
-            print("2. Exit")
-            choice = input("Enter your choice: ")
-
-            if choice == '1':
-                create_all_tables(con)
-                input("Tables created successfully! Press Enter to return to the menu...")
-            elif choice == '2':
-                print("Exiting...")
-                break
-            else:
-                print("Invalid choice. Please try again.")
-                input("Press Enter to continue...")
-
-    except pymysql.MySQLError as e:
-        print(f"Database connection failed: {e}")
-    finally:
-        if 'con' in locals():
-            con.close()
-            print("Database connection closed.")
-
-if __name__ == "__main__":
-    main()
