@@ -10,6 +10,22 @@ Asks the user to input details about a ship (name, type, tonnage, etc.) and inse
 
 Asks the user to input details about an officer (name, age, rank, etc.) and inserts this data into the OFFICER table.
 
+### add flag officer
+
+Asks the user to input details about an officer (name, age, rank, etc.) and inserts this data into the FLAG OFFICER table.
+
+### add commissioned officer
+
+Asks the user to input details about an officer (name, age, rank, etc.) and inserts this data into the COMMISSIONED OFFICER table.
+
+### add petty officer
+
+Asks the user to input details about an officer (name, age, rank, etc.) and inserts this data into the PETTY OFFICER table.
+
+### add warrant officer
+
+Asks the user to input details about an officer (name, age, rank, etc.) and inserts this data into the WARRANT OFFICER table.
+
 ### add crew
 
 Asks the user to input details about a crew member (name, age, role, etc.) and inserts this data into the CREW table.
@@ -46,6 +62,10 @@ Asks the user to input details about a station (name, coordinates), inserts this
 
 Asks the user to input details about a port (name, coordinates, alignment), inserts this data into the PORT table, and links supplies to the port.
 
+### file a report
+
+Adds a report
+
 ## Modification/Update Functions
 
 ### promote officer
@@ -69,6 +89,51 @@ Asks the user to input a ship’s ID and a new status, then updates the ship’s
 Asks the user to input a port’s ID and a new alignment, then updates the port's alignment in the PORT table.
 
 ## Selection Queries
+
+### show all ships
+Shows everything from ships 
+
+### show all officers
+Shows everything from officers
+
+### show all crew
+Shows everything from crew
+
+### show all dispatches
+Shows everything from dispatches
+
+### show all enemy ships
+Shows everything from enemy ships
+
+### show all squadrons
+Shows everything from squadrons
+
+### show all fleets
+Shows everything from fleets
+
+### show all reports
+Shows everything from reports
+
+### show all engagements
+Shows everything from engagements
+
+### show all stations
+stations
+
+### show all ports
+Shows everything from ports
+
+### show all flag officers
+Shows everything from officers
+
+### show all commissioned officers
+Shows everything from commissioned officers
+
+### show all warrant officers
+Shows everything from warrant officers
+
+### show all locations
+Shows everything from locations
 
 ### get ships of type
 
